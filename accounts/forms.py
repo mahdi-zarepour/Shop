@@ -13,11 +13,11 @@ class UserCreationForm(forms.ModelForm):
         fields = ('email', 'phone')
 
     
-    def clean_password_confirm(self):
+    def clean_password2(self):
         cd = self.cleaned_data
-        if [cd['password'] != cd['password_confirm']]:
-            raise forms.ValidationError('Password Must Match')
-        return cd['password_confirm']
+        if cd['password1'] and cd['password2'] and cd['password1'] != cd['password2']:
+            raise forms.ValidationError('passwords must match')
+        return cd['password2']
 
     
     def save(self, commit=True): # The save method(this method in ModelForm) is responsible for save form in DB.
