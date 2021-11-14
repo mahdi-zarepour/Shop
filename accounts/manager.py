@@ -11,7 +11,7 @@ class MyUserManager(BaseUserManager): # The model manager class is responsible f
             
         # self.model: User Model
         user = self.model(
-           email=self.normalize_email(email), # set email to lower case and normal
+           email=self.normalize_email(email), # set email to lower case and normalize
            phone=phone,
         )
         user.set_password(password) # Hash Password

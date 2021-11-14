@@ -12,7 +12,8 @@ class UserAdmin(BaseUserAdmin): # UserAdmin class is responsible for how the sho
     form = UserChangeForm
     add_form = UserCreationForm
 
-    list_display = ('__str__', 'email', 'phone', 'is_admin')
+    list_display = ('__str__', 'email', 'phone', 'first_name', 'last_name', 'is_admin')
+    list_editable = ('first_name', 'last_name')
     list_filter = ('is_admin',)
 
     # first form

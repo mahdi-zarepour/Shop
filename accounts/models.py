@@ -21,7 +21,10 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = ['phone'] # ask when create super user in command line
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name}'
+        if self.first_name or self.last_name:
+            return f'{self.first_name} {self.last_name}'
+        else:
+            return self.email
 
     def has_perm(self, perm, obj=None): # is user has special permissions?
         return True
