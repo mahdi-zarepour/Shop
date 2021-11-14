@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <small>{{ form.email.label_tag }}</small>
+    {{ form.email }}
+
+    <small>{{ form.phone.label_tag }}</small>
+    {{ form.phone }}
+
+    <small>{{ form.password.label_tag }}</small>
+    {{ form.password }}
+
+    <small>{{ form.password_confirm.label_tag }}</small>
+    {{ form.password_confirm }}
+
+
+
+    <br><input type="submit" class="btn btn-primary" value="Register"/>
+</form>
+
+{% endblock %}
