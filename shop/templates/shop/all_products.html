@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load thumbnail %}
 
 {% block title %}Shop{% endblock %}
 
@@ -7,7 +8,9 @@
 <ul class="card-wrapper">
     {% for product in products %}
     <li class="card">
-      <img style="width: 200px; height: 200px;" src='{{ product.image.url }}' alt='{{ product.name }}'>
+      {% thumbnail product.image "300x300" as img %}
+      <img style="width: 200px; height: 200px;" src='{{ img.url }}' alt='{{ product.name }}'>
+      {% endthumbnail %}
       <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
       <p>{{ product.description | truncatechars:50 }}</p>
     </li>
