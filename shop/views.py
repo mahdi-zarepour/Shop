@@ -27,6 +27,14 @@ class ProductDetail(DetailView):
 class Category_Product_List(ListView):
     def get_queryset(self, **kwargs):
         return Category.objects.filter(slug=self.kwargs['category'])
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category = Category.objects.filter(slug=self.kwargs['category'])
+        for product in category:
+            context['products'] = product.products.all()
+        return context
+
     context_object_name = 'categories'
     template_name = 'shop/category_product_list.html'
 

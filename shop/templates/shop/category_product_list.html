@@ -9,7 +9,7 @@
 
     <h1>{{ category.name }}</h1><br>
 
-    {% for product in category.products.all %}
+    {% for product in products %}
     <ul class="card-wrapper">
         <li class="card">
           <img style="width: 200px; height: 200px;" src='{{ product.image.url }}' alt='{{ product.name }}'>
