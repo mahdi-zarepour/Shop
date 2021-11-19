@@ -11,8 +11,8 @@ class AllProduct(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
-        return context
+        context['categories'] = Category.objects.filter(is_subcategory=False)
+        return context 
 
 
 
