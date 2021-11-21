@@ -1,6 +1,9 @@
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import FormMixin
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 from .models import Product, Category
+from cart.forms import CartAddForm
 
 
 
@@ -16,12 +19,15 @@ class AllProduct(ListView):
 
 
 
-class ProductDetail(DetailView):
+class ProductDetail(FormMixin, DetailView):
     template_name = 'shop/product_detail.html'
     context_object_name = 'product'
     def get_queryset(self, **kwargs):
         return Product.objects.filter(slug__iexact=self.kwargs['slug'])
-
+    
+    form_class = CartAddForm
+    def get_success_url(self):
+        return reverse('shop:product_detail', kwargs={'slug': self.slug})
 
 
 class Category_Product_List(ListView):

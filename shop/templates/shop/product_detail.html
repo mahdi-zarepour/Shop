@@ -11,5 +11,12 @@
       <p>{{ product.description }}</p>
     </li>
 </ul>
+<br>
+<form action="{% url 'cart:cart_add' product.id %}" method="post">
+  {% csrf_token %}
+  {{ form.quantity }}
+  <br>
+  <input type="submit" class="btn btn-primary" value="Add To Cart">
+</form>
 
 {% endblock %}
