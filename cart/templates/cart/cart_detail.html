@@ -16,8 +16,8 @@
     <tbody>
     {% for item in cart %}
     <tr>
-        <th scope="row">1</th>
-        <td>{{ item.name }}</td>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ item.product }}</td>
         <td>{{ item.quantity }}</td>
         <td>{{ item.price }}</td>
         <td>{{ item.total_price }}</td>

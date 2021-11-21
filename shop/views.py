@@ -20,14 +20,12 @@ class AllProduct(ListView):
 
 
 class ProductDetail(FormMixin, DetailView):
+    form_class = CartAddForm
     template_name = 'shop/product_detail.html'
     context_object_name = 'product'
     def get_queryset(self, **kwargs):
         return Product.objects.filter(slug__iexact=self.kwargs['slug'])
-    
-    form_class = CartAddForm
-    def get_success_url(self):
-        return reverse('shop:product_detail', kwargs={'slug': self.slug})
+
 
 
 class Category_Product_List(ListView):
