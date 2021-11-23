@@ -31,3 +31,12 @@ class CartAdd(View):
 
     def get(self, request):
         return redirect('shop:all_product')
+
+
+
+class CartRemove(View):
+    def get(self, request, *args, **kwargs):
+        cart = Cart(request)
+        product = get_object_or_404(Product, id=self.kwargs['product_id'])
+        cart.remove(product)
+        return redirect('cart:cart_detail')
