@@ -19,6 +19,15 @@ class Cart:
     def save(self):
         self.session.modified = True
 
+    def clear(self):
+        del self.session[CART_SESSION_ID]
+        self.save()
+
+    def remove(self, product):
+        product_id = str(product.id)
+        if product_id in self.cart:
+            del self.cart[product_id]
+            self.save()
 
     def add(self, product, quantity):
         product_id = str(product.id) # for read from session, must be a string
@@ -34,11 +43,6 @@ class Cart:
         return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
 
 
-    def remove(self, product):
-        product_id = str(product.id)
-        if product_id in self.cart:
-            del self.cart[product_id]
-            self.save()
 
 
     def __iter__(self):
