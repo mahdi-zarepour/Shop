@@ -6,5 +6,6 @@
 
     <p>total: {{ order.get_total_price }}</p>
 
+    <a href="{% url 'order:payment' order.id order.get_total_price %}" class="btn btn-primary">Pay</a>
 
 {% endblock %}
