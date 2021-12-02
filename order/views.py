@@ -1,8 +1,19 @@
-from django.views.generic import DetailView, CreateView
+from django.views.generic import (
+    View,
+    DetailView,
+    CreateView,
+)
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import (
+    render,
+    redirect,
+    get_object_or_404,
+)
 from django.contrib import messages
-from .models import Order, Item
+from django.utils import timezone
+from django.views.decorators.http import require_POST
+from .models import Order, Item, Coupon
+from .forms import CouponForm
 from cart.cart import Cart
 
 # Zarinpal
@@ -31,15 +42,52 @@ class OrderCreate(LoginRequiredMixin, CreateView):
 
 
 class OrderDeteil(LoginRequiredMixin, DetailView):
-     login_url = 'accounts:login'
+    login_url = 'accounts:login'
 
-     def get(self, request, *args, **kwargs):
-         order = get_object_or_404(Order, pk=kwargs['order_id'])
+    def get(self, request, *args, **kwargs):
+        order = get_object_or_404(Order, pk=kwargs['order_id'])
+        if order.user != request.user:
+            return redirect("shop:all_product")
 
-         if order.user != request.user:
-             return redirect("shop:all_product")
+        coupon_form = CouponForm()
 
-         return render(request, 'order/order.html', {'order': order})
+        return render(
+            request,
+            'order/order.html',
+            {
+                'order': order,
+                'coupon_form': coupon_form,
+            },
+            )
+
+
+@require_POST
+def couponapply(self, request, order_id):
+    now_time = timezone.now()
+    coupon_form = CouponForm(request.POST)
+    if coupon_form.is_valid():
+        code = coupon_form.cleaned_data['code']
+    try:
+        coupon = Coupon.objects.get(
+            code__exact=code,
+            valid_from__lte=now_time,
+            valid_to__gte=now_time,
+            active=True,
+            )
+    except Coupon.DoesNotExist:
+        messages.error(
+            self.request,
+            'coupon is not valid ...',
+            'danger',
+            )
+        return redirect('order:order_detail', order_id)
+
+    order = Order.objects.get(id=order_id)
+    order.discount = coupon.discount
+
+
+
+
 
 
 

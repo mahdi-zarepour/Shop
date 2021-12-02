@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Category(models.Model):
@@ -30,7 +30,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
     image = models.ImageField(upload_to='products/%Y/%m/%d/')
     description = models.TextField()
-    price = models.IntegerField()
+    price = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10000000)])
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
